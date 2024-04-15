@@ -1,0 +1,5 @@
+/promptopia-frontend/node_modules/
+/promptopia-backend/.gradle/
+/promptopia-backend/gradle/wrapper/
+/promptopia-backend/build/
+/.idea/
