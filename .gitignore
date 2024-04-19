@@ -3,3 +3,5 @@
 /promptopia-backend/gradle/wrapper/
 /promptopia-backend/build/
 /.idea/
+/promptopia-frontend/.next/
+/promptopia-frontend/package-lock.json/
