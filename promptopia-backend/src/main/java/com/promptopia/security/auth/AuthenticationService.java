@@ -1,5 +1,8 @@
 package com.promptopia.security.auth;
 
+import com.promptopia.exception.EmailAlreadyExistsException;
+import com.promptopia.exception.UserNotFoundException;
+import com.promptopia.exception.UsernameAlreadyExistsException;
 import com.promptopia.security.config.JwtService;
 import com.promptopia.security.token.Token;
 import com.promptopia.security.token.TokenRepository;
@@ -25,13 +28,17 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        validateEmailAndUsernameNotExists(request.getEmail(), request.getUsername());
+        validateEmailNotExists(request.getEmail());
+        validateUsernameNotExists(request.getUsername());
+
         User user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
+                .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
+
         User savedUser = userRepository.save(user);
 
         String jwtToken = jwtService.generateToken(user);
@@ -77,7 +84,7 @@ public class AuthenticationService {
 
         //TODO throw correct exception, catch it and handle it
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         String jwtToken = jwtService.generateToken(user);
 
@@ -87,5 +94,23 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    private void validateEmailAndUsernameNotExists(String email, String username) {
+        if (userRepository.findByEmail(email).isPresent() && userRepository.findByUsername(username).isPresent()) {
+            throw new UsernameAlreadyExistsException("Username and email already exists");
+        }
+    }
+
+    private void validateUsernameNotExists(String username) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new UsernameAlreadyExistsException("Username already exists");
+        }
+    }
+
+    private void validateEmailNotExists(String email) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new EmailAlreadyExistsException("Email already exists");
+        }
     }
 }

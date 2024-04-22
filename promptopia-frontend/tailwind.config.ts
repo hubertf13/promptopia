@@ -3,9 +3,9 @@ import type { Config } from "tailwindcss"
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/**/*.{ts,tsx}',
 	],
   prefix: "",
@@ -18,7 +18,14 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        satoshi: ['Satoshi', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+      },
+        satoshi: ['Satoshi', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
       colors: {
+        'primary-orange': '#FF5722',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
