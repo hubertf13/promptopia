@@ -6,12 +6,13 @@ import { CircleUserRound, Menu } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuContent, DropdownMenuSeparator } from "./ui/dropdown-menu";
 import { useAuth } from "./AuthProvider";
-import { useState } from "react";
 import { Skeleton } from "./ui/skeleton";
+import { useRouter } from "next/navigation";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Nav() {
+    const router = useRouter();
     const auth = useAuth();
 
     const logOut = async () => {
@@ -27,6 +28,7 @@ export default function Nav() {
 
         localStorage.removeItem("jwt");
         auth.setIsUserLoggedIn(false);
+        router.push("/");
     };
 
     return (
@@ -127,13 +129,24 @@ export default function Nav() {
                         ) : (
                             <>
                                 {!auth.isUserLoggedIn &&
-                                    <Link href="/login">
-                                        <Button
-                                            type="button"
-                                        >
-                                            Log In
-                                        </Button>
-                                    </Link>
+                                    <div className="flex gap-3 md:gap-5">
+                                        <Link href="/login">
+                                            <Button
+                                                variant="outline"
+                                                type="button"
+                                            >
+                                                Log In
+                                            </Button>
+                                        </Link>
+
+                                        <Link href="/register">
+                                            <Button
+                                                type="button"
+                                            >
+                                                Register
+                                            </Button>
+                                        </Link>
+                                    </div>
                                 }
                             </>
                         )}

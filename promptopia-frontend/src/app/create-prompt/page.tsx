@@ -1,14 +1,23 @@
-import { redirect } from "next/navigation";
-import { useContext } from "react";
+"use client"
+
+import { useState } from "react";
+import { useAuth } from "@components/AuthProvider";
+import { useRouter } from "next/navigation";
+import Form from "@components/Form";
 
 export default function CreatePrompt() {
-  // const { isUserLoggedIn } = useContext(AuthContext);
+  const [submitting, setSubmitting] = useState(false);
+  const [post, setPost] = useState({
+    prompt: "", 
+    tag: "", 
+  });
 
-  // if (!isUserLoggedIn) {
-  //   redirect("/login");
-  // }
+  const createPrompt = async () => {
+
+  };
+
 
   return (
-    <div>CreatePrompt</div>
-  )
+    <></>
+  );
 }
