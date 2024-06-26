@@ -1,11 +1,9 @@
 package com.promptopia.controller;
 
 import com.promptopia.model.Post;
-import com.promptopia.security.user.User;
 import com.promptopia.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,20 +14,33 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
-    @PostMapping
-    public ResponseEntity<Post> addPost(@RequestBody Post post, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        post.setUser(user);
-        return ResponseEntity.ok(postService.addPost(post));
+    @GetMapping("/{id}")
+    public ResponseEntity<Post> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(postService.findById(id));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Post>> getAllPosts() {
-        return ResponseEntity.ok(postService.getAllPosts());
+    public ResponseEntity<List<Post>> findAll() {
+        return ResponseEntity.ok(postService.findAll());
     }
 
     @GetMapping("/all/user/{id}")
-    public ResponseEntity<List<Post>> getAllUserPosts(@PathVariable Long id) {
-        return ResponseEntity.ok(postService.getAllUserPosts(id));
+    public ResponseEntity<List<Post>> findPostsByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(postService.findPostsByUserId(id));
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<Post> addPost(@RequestBody Post post) {
+        return ResponseEntity.ok(postService.addPost(post));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable Long id) {
+        postService.deleteById(id);
+    }
+
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post updatedPost) {
+        return ResponseEntity.ok(postService.updatePost(id, updatedPost));
     }
 }

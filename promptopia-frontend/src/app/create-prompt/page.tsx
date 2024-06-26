@@ -25,30 +25,37 @@ export default function CreatePrompt() {
   });
 
   const createPrompt = async (values: z.infer<typeof schemaPostForm>) => {
-
     setSubmitting(true);
 
-    const response = await fetch(new URL("/api/v1/post", baseUrl), {
-      method: "POST",
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt: values.prompt,
-        tag: values.tag,
-      }),
-      cache: "no-cache",
-    }).then(res => res.json());
-
-    if (response.error) {
-      form.setError("root.serverError", {
-        message: response.error,
+    try {
+      const response = await fetch(new URL("/api/v1/post/add", baseUrl), {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: values.prompt,
+          tag: values.tag,
+        }),
+        cache: "no-cache",
       });
-      setSubmitting(false);
-    } else {
+  
+      if (!response.ok) {
+        form.setError("root.serverError", {
+          message: "Failed to create prompt",
+        });
+        setSubmitting(false);
+        return;
+      }
+  
       router.push("/");
-      setSubmitting(false);
+      form.reset();
+
+    } catch (error) {
+      form.setError("root.serverError", {
+        message: "Failed to create prompt",
+      });
     }
   };
 

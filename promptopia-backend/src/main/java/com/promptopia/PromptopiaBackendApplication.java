@@ -23,7 +23,9 @@ public class PromptopiaBackendApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins(frontendHost);
+                registry.addMapping("/**")
+                        .allowedOrigins(frontendHost)
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
             }
         };
     }

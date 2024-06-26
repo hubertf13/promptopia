@@ -7,6 +7,7 @@ import { LoginForm } from "@components/LoginForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schemaLogin } from "@lib/schemas";
+import { useEffect } from "react";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -14,9 +15,11 @@ export default function Login() {
   const auth = useAuth();
   const router = useRouter();
 
-  if (auth.isUserLoggedIn) {
-    router.back();
-  }
+  useEffect(() => {
+      if (auth.isUserLoggedIn && !auth.isLoading) {
+          router.push("/");
+      }
+  }, [auth.isUserLoggedIn, auth.isLoading, router]);
   
   const form = useForm<z.infer<typeof schemaLogin>>({
       resolver: zodResolver(schemaLogin),
@@ -27,33 +30,52 @@ export default function Login() {
   });
 
   const onSubmit = async (values: z.infer<typeof schemaLogin>) => {
-
-      const response = await fetch(new URL("/api/v1/auth/authenticate", baseUrl), {
+    try {
+        const response = await fetch(new URL("/api/v1/auth/authenticate", baseUrl), {
           method: "POST",
           headers: {
-              "Content-Type": "application/json",
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
-              email: values.email,
-              password: values.password
+            email: values.email,
+            password: values.password
           }),
           cache: "no-cache",
-      });
+        });
 
-      if (!response.ok) {
+        if (!response.ok) {
           form.setError("root.serverError", {
-              message: "Invalid email or password",
+              message: "Invalid email or/and password",
           });
-          return;
-      }
 
-      const responseData = await response.json();
-      localStorage.setItem("jwt", responseData.token);
-      auth.setIsUserLoggedIn(true);
-      router.back();
+        } else {
+          const responseData = await response.json();
+          if (responseData.token) {
+            localStorage.setItem("jwt", responseData.token);
+            auth.setIsUserLoggedIn(true);
+            router.back();
+          } else {
+              form.setError("root.serverError", {
+                  message: responseData.message ||  "Unexpected error occurred",
+              });
+          }
+        }
+  
+      } catch (error) {
+        form.setError("root.serverError", {
+          message: "An error occurred while logging. Please try again",
+        });
+      }
+  }
+
+  if (auth.isLoading) {
+    return <div>Loading...</div>;
   }
 
   return (
-    <LoginForm form={form} onSubmit={onSubmit} />
+    <>
+      {auth.isUserLoggedIn ? null
+      : <LoginForm form={form} onSubmit={onSubmit} />}
+    </>
   );
 }

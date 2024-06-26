@@ -84,7 +84,6 @@ public class AuthenticationService {
                 )
         );
 
-        //TODO throw correct exception, catch it and handle it
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 

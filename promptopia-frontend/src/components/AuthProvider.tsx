@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type AuthDetails = {
     isUserLoggedIn: boolean,
@@ -12,9 +12,9 @@ type AuthDetails = {
 
 const defaultContext: AuthDetails = {
     isUserLoggedIn: false,
-    setIsUserLoggedIn: (isLoggedIn: boolean) => { },
+    setIsUserLoggedIn: () => { },
     isLoading: true,
-    setIsLoading: (isLoading: boolean) => { },
+    setIsLoading: () => { },
     userId: 0,
 }
 
@@ -27,19 +27,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [userId, setUserId] = useState(0);
 
-    const authContext: AuthDetails = {
-        isUserLoggedIn: isUserLogged,
-        setIsUserLoggedIn: setIsUserLogged,
-        isLoading: isLoading,
-        setIsLoading: setIsLoading,
-        userId: userId
-    }
-
     useEffect(() => {
         const checkUserAuth = async () => {
             const token = localStorage.getItem("jwt");
             if (token) {
-                setIsUserLogged(true);
                 try {
                     const response = await fetch(new URL("/api/v1/auth/user", baseUrl), {
                         method: "GET",
@@ -48,11 +39,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         },
                         cache: "no-cache",
                     });
+                    
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
                     const data = await response.json();
                     setUserId(data.userId);
+                    setIsUserLogged(true);
                 } catch (error) {
                     console.error('Fetch error:', error);
                     setIsUserLogged(false);
@@ -64,10 +57,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         };
 
         checkUserAuth();
-    }, []);
+    }, [isUserLogged, userId]);
 
     return (
-        <AuthContext.Provider value={authContext}>
+        <AuthContext.Provider value={{isUserLoggedIn: isUserLogged, setIsUserLoggedIn: setIsUserLogged, isLoading, setIsLoading, userId}}>
             {children}
         </AuthContext.Provider>
     );
