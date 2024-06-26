@@ -1,68 +1,22 @@
-"use client";
-
-import { z } from "zod";
-
 import { CardTitle, CardDescription, CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "./AuthProvider";
-import { useRouter } from "next/navigation";
 import { Errors } from "./custom/Errors";
 import { Button } from "./ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { UseFormReturn, useForm } from "react-hook-form";
 import Link from "next/link";
+import { z } from "zod";
+import { schemaLogin } from "@lib/schemas";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-const schemaLogin = z.object({
-    email: z.string().email({
-        message: "Please enter a valid email address",
-    }),
-    password: z.string().min(6, {
-        message: "Password must be at least 6 characters"
-    }).max(100, {
-        message: "Password cannot exceed 100 characters",
-    }),
-});
-
-export function LoginForm() {
-    const router = useRouter();
-    const auth = useAuth();
-    const form = useForm<z.infer<typeof schemaLogin>>({
-        resolver: zodResolver(schemaLogin),
-        defaultValues: {
-            password: "",
-            email: "",
-        },
-    });
-
-    const onSubmit = async (values: z.infer<typeof schemaLogin>) => {
-
-        const response = await fetch(new URL("/api/v1/auth/authenticate", baseUrl), {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email: values.email,
-                password: values.password
-            }),
-            cache: "no-cache",
-        });
-
-        if (!response.ok) {
-            form.setError("root.serverError", {
-                message: "Invalid email or password",
-            });
-            return;
-        }
-
-        const responseData = await response.json();
-        localStorage.setItem("jwt", responseData.token);
-        auth.setIsUserLoggedIn(true);
-        router.back();
-    }
+export function LoginForm({
+    form, onSubmit
+}: {
+    form: UseFormReturn<{
+        email: string;
+        password: string;
+    }, any, undefined>;
+    onSubmit: (values: z.infer<typeof schemaLogin>) => Promise<void>;
+}) {
 
     return (
         <div className="w-full max-w-md">

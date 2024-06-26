@@ -12,7 +12,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             EmailAlreadyExistsException.class,
             UsernameAlreadyExistsException.class,
-            UserNotFoundException.class
+            UserNotFoundException.class,
+            TokenIsNotValidException.class
     })
     public ResponseEntity<?> handleEmailAlreadyExistsException(RuntimeException e) {
         return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));

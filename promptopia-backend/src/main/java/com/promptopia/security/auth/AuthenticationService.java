@@ -1,6 +1,7 @@
 package com.promptopia.security.auth;
 
 import com.promptopia.exception.EmailAlreadyExistsException;
+import com.promptopia.exception.TokenIsNotValidException;
 import com.promptopia.exception.UserNotFoundException;
 import com.promptopia.exception.UsernameAlreadyExistsException;
 import com.promptopia.security.config.JwtService;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -112,5 +114,18 @@ public class AuthenticationService {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
+    }
+
+    public Long getUserIdFromToken(String jwt) {
+        Optional<Token> optionalToken = tokenRepository.findByToken(jwt);
+        Boolean isTokenValid = optionalToken
+                .map(token -> !token.isExpired() && !token.isRevoked())
+                .orElse(false);
+
+        if (!isTokenValid) {
+            throw new TokenIsNotValidException("Unauthorized");
+        }
+
+        return optionalToken.get().getUser().getId();
     }
 }

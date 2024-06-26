@@ -2,10 +2,7 @@ package com.promptopia.security.token;
 
 import com.promptopia.security.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Entity
@@ -27,6 +24,7 @@ public class Token {
     private boolean revoked;
 
     @ManyToOne
+    @ToString.Exclude
     @JoinColumn(name = "user_id")
     private User user;
 }
