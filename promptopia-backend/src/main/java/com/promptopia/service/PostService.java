@@ -66,7 +66,7 @@ public class PostService {
                     postOwnerEmail,
                     authenticatedUserEmail);
             throw new UnauthorizedOperationException(
-                    "You are not the owner of this post. You do not have permission to update it.");
+                    "You are not the owner of this post. You do not have permission to update it");
         }
     }
 

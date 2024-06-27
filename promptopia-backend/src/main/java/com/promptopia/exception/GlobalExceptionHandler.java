@@ -35,6 +35,11 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(e, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UnauthorizedOperationException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedOperationException(UnauthorizedOperationException e) {
+        return buildErrorResponse(e, HttpStatus.UNAUTHORIZED);
+    }
+
     private ResponseEntity<ErrorResponse> buildErrorResponse(RuntimeException e, HttpStatus status) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), status.value());
         log.error("Exception: ", e);

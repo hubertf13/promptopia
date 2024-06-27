@@ -5,3 +5,4 @@
 /.idea/
 /promptopia-frontend/.next/
 /promptopia-frontend/package-lock.json/
+/promptopia-frontend/.gitignore

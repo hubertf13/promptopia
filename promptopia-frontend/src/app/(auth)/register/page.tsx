@@ -1,11 +1,11 @@
 "use client"
 
 import { useRouter } from "next/navigation";
-import { useAuth } from "@components/AuthProvider";
-import { RegisterForm } from "@components/RegisterForm";
+import { useAuth } from "@/components/AuthProvider";
+import { RegisterForm } from "@/components/RegisterForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { schemaRegister } from "@lib/schemas";
+import { schemaRegister } from "@/lib/schemas";
 import { z } from "zod";
 import { useEffect } from "react";
 

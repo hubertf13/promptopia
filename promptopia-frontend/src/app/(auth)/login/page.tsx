@@ -2,11 +2,11 @@
 
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@components/AuthProvider";
-import { LoginForm } from "@components/LoginForm";
+import { useAuth } from "@/components/AuthProvider";
+import { LoginForm } from "@/components/LoginForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { schemaLogin } from "@lib/schemas";
+import { schemaLogin } from "@/lib/schemas";
 import { useEffect } from "react";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;

@@ -7,7 +7,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Errors } from "./custom/Errors";
 import Link from "next/link";
-import { schemaPostForm } from "@lib/schemas";
+import { schemaPostForm } from "@/lib/schemas";
 import { z } from "zod";
 
 export default function PostForm({

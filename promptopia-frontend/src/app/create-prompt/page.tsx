@@ -1,13 +1,13 @@
 "use client"
 
-import { useState } from "react";
-import { useAuth } from "@components/AuthProvider";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/components/AuthProvider";
 import { useRouter } from "next/navigation";
-import PostForm from "@components/PostForm";
+import PostForm from "@/components/PostForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { schemaPostForm } from "@lib/schemas";
+import { schemaPostForm } from "@/lib/schemas";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -15,6 +15,12 @@ export default function CreatePrompt() {
   const auth = useAuth();
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+      if (!auth.isUserLoggedIn && !auth.isLoading) {
+          router.push("/login");
+      }
+  }, [auth.isUserLoggedIn, auth.isLoading, router]);
 
   const form = useForm<z.infer<typeof schemaPostForm>>({
     resolver: zodResolver(schemaPostForm),
@@ -59,13 +65,20 @@ export default function CreatePrompt() {
     }
   };
 
+  if (auth.isLoading) {
+      return <div>Loading...</div>;
+  }
+
   return (
-    <PostForm
-      form={form}
-      type="Create"
-      submitting={submitting}
-      onSubmit={createPrompt}
-    />
+    <>
+      {!auth.isUserLoggedIn ? null 
+      : <PostForm
+        form={form}
+        type="Create"
+        submitting={submitting}
+        onSubmit={createPrompt}
+      />}
+    </>
   );
 }
 

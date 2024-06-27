@@ -6,7 +6,7 @@ import { CardTitle, CardDescription, CardHeader, CardContent, CardFooter, Card }
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { schemaRegister } from "@lib/schemas";
+import { schemaRegister } from "@/lib/schemas";
 
 export function RegisterForm({
     form, onSubmit

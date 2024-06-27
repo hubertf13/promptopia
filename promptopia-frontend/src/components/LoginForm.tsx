@@ -6,7 +6,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { UseFormReturn, useForm } from "react-hook-form";
 import Link from "next/link";
 import { z } from "zod";
-import { schemaLogin } from "@lib/schemas";
+import { schemaLogin } from "@/lib/schemas";
 
 export function LoginForm({
     form, onSubmit

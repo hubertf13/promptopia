@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useAuth } from "./AuthProvider";
 import { usePathname, useRouter } from "next/navigation";
@@ -70,7 +70,7 @@ export default function PromptCard({ post, handleTagClick, handleEdit, handleDel
       <p className="font-inter text-sm blue_gradient cursor-pointer"
       onClick={() => handleTagClick && handleTagClick(post.tag)}
       >
-        {post.tag}
+        #{post.tag}
       </p>
 
       {auth?.userId === post.user.id &&

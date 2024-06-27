@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import "@styles/globals.css";
-import Nav from "@components/Nav";
-import { AuthProvider } from "@components/AuthProvider";
+import "@/styles/globals.css"
+import Nav from "@/components/Nav";
+import { AuthProvider } from "@/components/AuthProvider";
 import { Suspense } from "react";
 import Loading from "./loading";
 
