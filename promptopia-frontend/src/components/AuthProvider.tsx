@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         },
                         cache: "no-cache",
                     });
-                    
+
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [isUserLogged, userId]);
 
     return (
-        <AuthContext.Provider value={{isUserLoggedIn: isUserLogged, setIsUserLoggedIn: setIsUserLogged, isLoading, setIsLoading, userId}}>
+        <AuthContext.Provider value={{ isUserLoggedIn: isUserLogged, setIsUserLoggedIn: setIsUserLogged, isLoading, setIsLoading, userId }}>
             {children}
         </AuthContext.Provider>
     );

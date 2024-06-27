@@ -16,9 +16,9 @@ export default function Register() {
   const router = useRouter();
 
   useEffect(() => {
-      if (auth.isUserLoggedIn && !auth.isLoading) {
-          router.push("/");
-      }
+    if (auth.isUserLoggedIn && !auth.isLoading) {
+      router.push("/");
+    }
   }, [auth.isUserLoggedIn, auth.isLoading, router]);
 
   const form = useForm<z.infer<typeof schemaRegister>>({
@@ -70,7 +70,7 @@ export default function Register() {
   return (
     <>
       {auth.isUserLoggedIn ? null
-      : <RegisterForm form={form} onSubmit={onSubmit} />}
+        : <RegisterForm form={form} onSubmit={onSubmit} />}
     </>
   );
 }

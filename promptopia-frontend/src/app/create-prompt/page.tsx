@@ -17,9 +17,9 @@ export default function CreatePrompt() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-      if (!auth.isUserLoggedIn && !auth.isLoading) {
-          router.push("/login");
-      }
+    if (!auth.isUserLoggedIn && !auth.isLoading) {
+      router.push("/login");
+    }
   }, [auth.isUserLoggedIn, auth.isLoading, router]);
 
   const form = useForm<z.infer<typeof schemaPostForm>>({
@@ -46,7 +46,7 @@ export default function CreatePrompt() {
         }),
         cache: "no-cache",
       });
-  
+
       if (!response.ok) {
         form.setError("root.serverError", {
           message: "Failed to create prompt",
@@ -54,7 +54,7 @@ export default function CreatePrompt() {
         setSubmitting(false);
         return;
       }
-  
+
       router.push("/");
       form.reset();
 
@@ -66,18 +66,18 @@ export default function CreatePrompt() {
   };
 
   if (auth.isLoading) {
-      return <div>Loading...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
     <>
-      {!auth.isUserLoggedIn ? null 
-      : <PostForm
-        form={form}
-        type="Create"
-        submitting={submitting}
-        onSubmit={createPrompt}
-      />}
+      {!auth.isUserLoggedIn ? null
+        : <PostForm
+          form={form}
+          type="Create"
+          submitting={submitting}
+          onSubmit={createPrompt}
+        />}
     </>
   );
 }

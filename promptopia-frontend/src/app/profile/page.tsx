@@ -11,13 +11,13 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 type Post = {
     id: number,
     user: {
-      id: number,
-      username: string,
-      email: string
+        id: number,
+        username: string,
+        email: string
     },
     prompt: string,
     tag: string,
-  }
+}
 
 export default function MyProfile() {
     const auth = useAuth();
@@ -90,14 +90,14 @@ export default function MyProfile() {
 
     return (
         <>
-            {!auth.isUserLoggedIn ? null 
-            : <Profile
-                name="My"
-                desc="Welcome to your personalized profile page"
-                data={myPosts}
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
-            />}
+            {!auth.isUserLoggedIn ? null
+                : <Profile
+                    name="My"
+                    desc="Welcome to your personalized profile page"
+                    data={myPosts}
+                    handleEdit={handleEdit}
+                    handleDelete={handleDelete}
+                />}
         </>
     );
 }

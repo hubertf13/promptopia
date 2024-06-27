@@ -19,9 +19,9 @@ export default function EditPrompt() {
   const promptId = searchParams.get("id");
 
   useEffect(() => {
-      if (!auth.isUserLoggedIn && !auth.isLoading) {
-          router.push("/login");
-      }
+    if (!auth.isUserLoggedIn && !auth.isLoading) {
+      router.push("/login");
+    }
   }, [auth.isUserLoggedIn, auth.isLoading, router]);
 
   const form = useForm<z.infer<typeof schemaPostForm>>({
@@ -49,7 +49,7 @@ export default function EditPrompt() {
             prompt: responseData.prompt,
             tag: responseData.tag,
           });
-          
+
         } else {
           const responseData = await response.json();
           form.setError("root.serverError", {
@@ -94,7 +94,7 @@ export default function EditPrompt() {
         }),
         cache: "no-cache",
       });
-  
+
       if (!response.ok) {
         const responseData = await response.json();
         form.setError("root.serverError", {
@@ -103,7 +103,7 @@ export default function EditPrompt() {
         setSubmitting(false);
         return;
       }
-  
+
       router.push("/");
       form.reset();
 
@@ -115,18 +115,18 @@ export default function EditPrompt() {
   };
 
   if (auth.isLoading) {
-      return <div>Loading...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
     <>
-      {!auth.isUserLoggedIn ? null 
-      : <PostForm
-        form={form}
-        type="Edit"
-        submitting={submitting}
-        onSubmit={updatePrompt}
-      />}
+      {!auth.isUserLoggedIn ? null
+        : <PostForm
+          form={form}
+          type="Edit"
+          submitting={submitting}
+          onSubmit={updatePrompt}
+        />}
     </>
   );
 }

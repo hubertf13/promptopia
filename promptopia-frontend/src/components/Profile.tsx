@@ -34,25 +34,25 @@ export default function Profile({
       </h1>
       <p className="desc text-left">{desc}</p>
       <div className="mt-10 prompt_layout">
-      {data.map((post: {
-        id: number,
-        user: {
+        {data.map((post: {
           id: number,
-          username: string,
-          email: string
-        },
-        prompt: string,
-        tag: string,
-      }) => (
-        <PromptCard
-          key={post.id}
-          post={post}
-          handleEdit={() => handleEdit && handleEdit(post)}
-          handleDelete={() => handleDelete && handleDelete(post)}
-          handleTagClick={() => {}}
-        />
-      ))}
-    </div>
+          user: {
+            id: number,
+            username: string,
+            email: string
+          },
+          prompt: string,
+          tag: string,
+        }) => (
+          <PromptCard
+            key={post.id}
+            post={post}
+            handleEdit={() => handleEdit && handleEdit(post)}
+            handleDelete={() => handleDelete && handleDelete(post)}
+            handleTagClick={() => { }}
+          />
+        ))}
+      </div>
     </section>
   )
 }

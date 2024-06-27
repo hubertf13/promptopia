@@ -6,10 +6,10 @@ import { useState, useEffect } from "react";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export default function UserProfile({ 
-    params 
+export default function UserProfile({
+    params
 }: {
-    params: { id: number}
+    params: { id: number }
 }) {
     const searchParams = useSearchParams();
     const userName = searchParams.get("name") || "";
@@ -38,15 +38,15 @@ export default function UserProfile({
         if (params?.id) {
             fetchPosts();
         }
-      }, [params.id]);
+    }, [params.id]);
 
     return (
         <Profile
             name={userName}
             desc={`Welcome to ${userName}'s personalized profile page. Explore ${userName}'s exceptional prompts and be inspired by the power of their imagination`}
             data={userPosts}
-            handleEdit={() => {}}
-            handleDelete={() => {}}
+            handleEdit={() => { }}
+            handleDelete={() => { }}
         />
     );
 }

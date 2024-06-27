@@ -1,14 +1,14 @@
 import { z } from "zod";
 
 export const schemaLogin = z.object({
-  email: z.string().email({
-      message: "Please enter a valid email address",
-  }),
-  password: z.string().min(6, {
-      message: "Password must be at least 6 characters"
-  }).max(100, {
-      message: "Password cannot exceed 100 characters",
-  }),
+    email: z.string().email({
+        message: "Please enter a valid email address",
+    }),
+    password: z.string().min(6, {
+        message: "Password must be at least 6 characters"
+    }).max(100, {
+        message: "Password cannot exceed 100 characters",
+    }),
 });
 
 export const schemaRegister = z.object({
