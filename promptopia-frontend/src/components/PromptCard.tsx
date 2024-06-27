@@ -26,6 +26,13 @@ export default function PromptCard({ post, handleTagClick, handleEdit, handleDel
   const router = useRouter();
   const [copied, setCopied] = useState("");
 
+  const handleProfileClick = () => {
+    if (post.user.id === auth.userId) 
+      return router.push("/profile");
+
+    router.push(`/profile/${post.user.id}?name=${post.user.username}`);
+  };
+
   const handleCopy = () => {
     setCopied(post.prompt);
     navigator.clipboard.writeText(post.prompt);
@@ -35,7 +42,10 @@ export default function PromptCard({ post, handleTagClick, handleEdit, handleDel
   return (
     <div className="prompt_card">
       <div className="flex justify-between items-start gap-5">
-        <div className="flex-1 flex justify-start items-center gap-3 cursor-pointer">
+        <div 
+          className="flex-1 flex justify-start items-center gap-3 cursor-pointer" 
+          onClick={handleProfileClick}
+        >
           <CircleUserRound
             width={40}
             height={40}

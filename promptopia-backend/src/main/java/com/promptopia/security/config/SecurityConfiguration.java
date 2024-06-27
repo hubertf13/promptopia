@@ -30,6 +30,8 @@ public class SecurityConfiguration {
                         .permitAll()
                         .requestMatchers("/api/v1/post/all")
                         .permitAll()
+                        .requestMatchers("/api/v1/post/all/user/**")
+                        .permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
