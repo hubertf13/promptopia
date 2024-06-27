@@ -4,7 +4,7 @@
 
 ## 👀 About
 
-<p align="justify">A Java Spring and Next.js web application for sharing prompts used in ChatGPT. Project inspired from user <i>adrianhajdin</i></p>
+<p align="justify">A Java Spring and Next.js web application for sharing prompts used in ChatGPT. Project inspired from user <i>adrianhajdin</i>.</p>
 
 ## 🕹️ Functionalities
 
