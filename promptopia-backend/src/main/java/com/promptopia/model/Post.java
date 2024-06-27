@@ -5,7 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
@@ -20,4 +23,8 @@ public class Post {
     private String tag;
     @ManyToOne
     private User user;
+
+    public void deleteHashtagsFromTag() {
+        this.tag = this.tag.replaceAll("#", "");
+    }
 }

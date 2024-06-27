@@ -7,7 +7,7 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const PromptCardList = ({ data, handleTagClick }: {
   data: never[],
-  handleTagClick: () => void
+  handleTagClick: (tagName: string) => void
 }) => {
   return (
     <div className="mt-16 prompt_layout">
@@ -34,12 +34,11 @@ const PromptCardList = ({ data, handleTagClick }: {
 }
 
 export default function Feed() {
+  const [allPosts, setAllPosts] = useState([]);
+
   const [searchText, setSearchText] = useState("");
-  const [posts, setPosts] = useState([]);
-
-  const handleSearchChange = () => {
-
-  };
+  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [searchedResults, setSearchedResults] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -51,11 +50,49 @@ export default function Feed() {
         cache: "no-cache",
       }).then(res => res.json());
 
-      setPosts(response)
+      setAllPosts(response)
     }
 
     fetchPosts();
   }, []);
+
+  const filterPrompts = (searchtext: string) => {
+    const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
+    return allPosts.filter(
+      (item: {
+        id: number,
+        user: {
+          id: number,
+          username: string,
+          email: string
+        },
+        prompt: string,
+        tag: string,
+      }) =>
+        regex.test(item.user.username) ||
+        regex.test(item.tag) ||
+        regex.test(item.prompt)
+    );
+  };
+
+  const handleTagClick = (tagName: string) => {
+    setSearchText(tagName);
+
+    const searchResult = filterPrompts(tagName);
+    setSearchedResults(searchResult);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (searchTimeout) clearTimeout(searchTimeout);
+    setSearchText(e.target.value);
+
+    setSearchTimeout(
+      setTimeout(() => {
+        const searchResult = filterPrompts(e.target.value);
+        setSearchedResults(searchResult);
+      }, 500)
+    );
+  }
 
   return (
     <section className="feed">
@@ -70,10 +107,15 @@ export default function Feed() {
         />
       </form>
 
-      <PromptCardList
-        data={posts}
-        handleTagClick={() => { }}
-      />
+      {/* All Prompts */}
+      {searchText ? (
+        <PromptCardList
+          data={searchedResults}
+          handleTagClick={handleTagClick}
+        />
+      ) : (
+        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
+      )}
     </section>
   )
 }

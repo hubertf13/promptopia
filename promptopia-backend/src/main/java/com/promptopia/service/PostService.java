@@ -9,7 +9,6 @@ import com.promptopia.security.user.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -33,6 +32,7 @@ public class PostService {
 
         User user = (User) authenticationFacade.getAuthentication().getPrincipal();
         post.setUser(user);
+        post.deleteHashtagsFromTag();
 
         return postRepository.save(post);
     }
@@ -58,6 +58,7 @@ public class PostService {
         if (authenticatedUserEmail.equals(postOwnerEmail)) {
             existingPost.setPrompt(updatedPost.getPrompt());
             existingPost.setTag(updatedPost.getTag());
+            existingPost.deleteHashtagsFromTag();
             log.info("Updating post with ID: {}", id);
             return postRepository.save(existingPost);
         } else {
